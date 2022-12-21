@@ -5,16 +5,23 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const app = express();
-// console.log(process.env.client_base_url.toString());
+console.log(process.env.client_base_url.toString());
 app.use(
-	cors({ credentials: true, origin: process.env.client_base_url.toString() })
+	cors({
+		credentials: true,
+		origin: process.env.client_base_url.toString(),
+		methods: ["GET", "PUT", "POST"],
+	})
 );
 
 app.use(express.json());
 app.use(cookieParse());
 
 app.get("/", (req, res) => {
-	res.cookie("cross-site-cook", "hehe");
+	res.cookie("server-get-cook", "serverget123", {
+		sameSite: "none",
+		secure: true,
+	});
 	res.json({ msg: "server is up and running" });
 });
 
