@@ -5,11 +5,10 @@ axios.defaults.withCredentials = true;
 
 function App() {
 	const [cookies, setCookie, removeCookie] = useCookies();
-	const serverUri = process.env.server_base_uri;
-	console.log("serveruri = ", serverUri);
+	const serverUri = "https://cookies-server.onrender.com/";
 	const logIn = () => {
 		axios
-			.post("http://localhost:5000/")
+			.post(serverUri)
 			.then((response) => response.data)
 			.then((data) => {
 				console.log(data);
@@ -29,7 +28,7 @@ function App() {
 
 	const handleGet = () => {
 		axios
-			.get("http://localhost:5000/")
+			.get(serverUri)
 			.then((resp) => resp.data)
 			.then((data) => console.log(data));
 	};
