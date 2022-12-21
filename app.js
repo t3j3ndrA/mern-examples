@@ -27,4 +27,6 @@ app.post("/", (req, res) => {
 	return res.json({ uid: "client123", msg: "post: server is up and running" });
 });
 
-app.listen(5000, () => console.log("Litening on 5000"));
+app.listen(process.env.PORT || 5000, () =>
+	console.log("Litening on " + process.env.PORT || 5000)
+);
