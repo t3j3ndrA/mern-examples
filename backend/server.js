@@ -19,6 +19,13 @@ app.get("/api", (req, res) => {
 	res.json({ msg: "server is up and running" });
 });
 
+app.post("/api/login", (req, res) => {
+	const { username, password } = req.body;
+	console.log(username, password);
+	res.cookie("user", username);
+	res.json({ msg: "server is up and running" });
+});
+
 // __dirname will give the abolute path of server.js file
 // this middleware is responsible for serving static files
 app.use(express.static(path.join(__dirname, "..", "/frontend/build")));
