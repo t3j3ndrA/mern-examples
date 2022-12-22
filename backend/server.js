@@ -22,7 +22,7 @@ app.get("/api", (req, res) => {
 });
 
 // for the deployment
-const __dirname = path.resolve();
+console.log("directory name : " + __dirname);
 app.use(express.static(path.join(__dirname, "/frontend/build")));
 app.get("*", (req, res) =>
 	res.sendFile(path.join(__dirname, "/frontend/build/index.html"))
