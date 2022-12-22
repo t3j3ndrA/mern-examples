@@ -1,0 +1,9 @@
+# dependencies
+node_modules
+
+# secret files
+.env
+.env.local
+
+# production
+build
