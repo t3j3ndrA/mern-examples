@@ -2,38 +2,48 @@ const express = require("express");
 const cors = require("cors");
 const cookieParse = require("cookie-parser");
 const dotenv = require("dotenv");
+const session = require("express-session");
 dotenv.config();
 
 const app = express();
-console.log(process.env.client_base_url.toString());
-app.use(
-	cors({
-		credentials: true,
-		origin: process.env.client_base_url.toString(),
-		methods: ["GET", "PUT", "POST"],
-	})
-);
 
+const host =
+	process.env.NODE_ENV === "production"
+		? process.env.client_base_url.toString()
+		: "http://localhost:3000";
+
+console.log("host is : ", host);
+app.use(cors({ origin: host, credentials: true }));
 app.use(express.json());
 app.use(cookieParse());
 
+// app.use(
+// 	session({
+// 		secret: "my-secrets-1234",
+// 		saveUninitialized: true,
+// 		resave: false,
+// 		cookie: {
+// 			httpOnly: true,
+// 			maxAge: 60 * 60,
+// 		},
+// 	})
+// );
+
 app.get("/", (req, res) => {
-	res.cookie("server-get-cook", "serverget123", {
-		sameSite: "none",
-		secure: true,
+	// req.session.user = "tej";
+	res.cookie("user-id", "tej123", {
+		httpOnly: true,
 	});
+	res.cookie("faltu", "not-working");
+
 	res.json({ msg: "server is up and running" });
 });
 
-app.post("/", (req, res) => {
-	console.log("cookie from client : ", req.cookies);
-	res.cookie("server-cook", "server123", {
-		sameSite: "none",
-		secure: true,
-	});
-	return res.json({ uid: "client123", msg: "post: server is up and running" });
+app.get("/user", (req, res) => {
+	const cookies = req.cookies;
+	res.json({ cookies: cookies });
 });
 
 app.listen(process.env.PORT || 5000, () =>
-	console.log("Litening on " + process.env.PORT || 5000)
+	console.log("Litening on " + (process.env.PORT || 5000))
 );
