@@ -36,8 +36,14 @@ app.get("/", (req, res) => {
 	res.cookie("user-id", "tej123", {
 		httpOnly: true,
 		domain: ".onrender.com",
+		sameSite: "none",
+		secure: true,
 	});
-	res.cookie("faltu", "not-working", { domain: ".onrender.com" });
+	res.cookie("faltu", "not-working", {
+		domain: ".onrender.com",
+		sameSite: "none",
+		secure: true,
+	});
 
 	res.json({ msg: "server is up and running" });
 });
