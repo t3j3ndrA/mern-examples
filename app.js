@@ -35,8 +35,9 @@ app.get("/", (req, res) => {
 	// req.session.user = "tej";
 	res.cookie("user-id", "tej123", {
 		httpOnly: true,
+		domain: "onrender.com",
 	});
-	res.cookie("faltu", "not-working");
+	res.cookie("faltu", "not-working", { domain: "onrender.com" });
 
 	res.json({ msg: "server is up and running" });
 });
