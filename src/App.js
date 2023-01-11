@@ -1,63 +1,36 @@
-import { useEffect } from "react";
-import { useCookies } from "react-cookie";
+import React from "react";
 import axios from "axios";
-axios.defaults.withCredentials = true;
-
-function App() {
-	const [cookies, setCookie, removeCookie] = useCookies();
-	const serverUri = "https://cookies-server.onrender.com/";
-	const logIn = () => {
+import { Cookies, useCookies } from "react-cookie";
+const App = () => {
+	axios.defaults.withCredentials = true;
+	console.log(".back", process.env.REACT_APP_BACKEND);
+	const [cookies, setCookie, removeCookie] = useCookies(["user-id"]);
+	console.log("Sn frontend cookies = ", cookies);
+	const handleGetRoot = () => {
 		axios
-			.post(serverUri)
+			.get(process.env.REACT_APP_BACKEND, { withCredentials: true })
 			.then((response) => response.data)
 			.then((data) => {
 				console.log(data);
-				setCookie("logged-in-user", data?.uid);
 			})
-			.catch((errr) => console.log(errr));
+			.catch((err) => console.log(err));
 	};
-
-	const handleLogOut = () => {
-		removeCookie("logged-in-user");
-	};
-
-	console.log("cookie : ", cookies);
-	useEffect(() => {
-		setCookie("initial", "initial-cookie");
-	}, []);
-
-	const handleGet = () => {
+	const handleUser = () => {
 		axios
-			.get(serverUri)
-			.then((resp) => resp.data)
-			.then((data) => console.log(data));
+			.get(process.env.REACT_APP_BACKEND + "/user", { withCredentials: true })
+			.then((response) => response.data)
+			.then((data) => {
+				console.log("/user", data);
+			})
+			.catch((err) => console.log(err));
 	};
+
 	return (
 		<div>
-			<p>App</p>
-			<button
-				onClick={() => {
-					logIn();
-				}}
-			>
-				Log in
-			</button>
-			<button
-				onClick={() => {
-					handleLogOut();
-				}}
-			>
-				Log out
-			</button>
-			<button
-				onClick={() => {
-					handleGet();
-				}}
-			>
-				Set get cookie
-			</button>
+			<button onClick={() => handleGetRoot()}>Get /</button>
+			<button onClick={() => handleUser()}>Get /user</button>
 		</div>
 	);
-}
+};
 
 export default App;
